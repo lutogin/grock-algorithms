@@ -74,16 +74,16 @@ function makeQueue(data) {
 }
 
 function makeQueue2(data, levelCounter = 0) {
-  const mainQueue = data.map((el) => ({
-    name: el.name,
-    flagged: el.flagged,
+  const mainQueue = data.map((person) => ({
+    name: person.name,
+    flagged: person.flagged,
     levelCounter,
   }));
 
   const dataToRecursionCall = [];
-  data.forEach((el) => {
-    if (el.edge.length) {
-      dataToRecursionCall.push(el.edge);
+  data.forEach((person) => {
+    if (person.edge.length) {
+      dataToRecursionCall.push(person.edge);
     }
   });
 
