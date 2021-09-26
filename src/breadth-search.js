@@ -73,6 +73,12 @@ function makeQueue(data) {
   }
 }
 
+/**
+ * Make queue
+ * @param data
+ * @param levelCounter
+ * @return {*}
+ */
 function makeQueue2(data, levelCounter = 0) {
   const mainQueue = data.map((person) => ({
     name: person.name,
@@ -104,3 +110,25 @@ console.log('queue ---> ', queue);
 const foundFlaggedPerson = queue.find((el) => el.flagged);
 
 console.log('Flagged person on', foundFlaggedPerson.levelCounter, 'position');
+
+/**
+ * Find person without creating queue
+ * @param data
+ * @param levelCounter
+ * @return {{person: *, levelCounter: number}|*}
+ */
+function findFlaggedPerson(data, levelCounter = 0) {
+  if (!data && !data.length) {
+    return ;
+  }
+
+  const result = data.find((person) => person.flagged);
+
+  return result
+    ? { person: result, levelCounter }
+    : findFlaggedPerson(data.map((person) => person.edge).flat(1), levelCounter + 1);
+
+}
+
+
+console.log(findFlaggedPerson(graph));
