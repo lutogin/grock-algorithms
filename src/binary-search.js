@@ -1,23 +1,50 @@
-const testArr = Array.from(Array(1024).keys());
+const arr = Array.from(new Array(100).keys());
 
-function binarySearch(arr, search) {
-  let indexMin = 0;
-  let indexMax = arr.length-1;
+const sought = 67;
 
-  while (indexMin <= indexMax) {
-    const indexMid = Math.floor((indexMin + indexMax) / 2);
-    const currentValue = arr[indexMid];
+let iterations1 = 0;
+let iterations2 = 0;
 
-    if (currentValue === search) {
-      return indexMid;
-    } else if (currentValue > search) {
-      indexMax = indexMid - 1;
-    } else if (currentValue < search) {
-      indexMin = indexMid + 1;
-    }
+function binaryFinderRecursion(arr, sought) {
+  iterations1 += 1;
+  const middleIndex = Math.floor(arr.length / 2);
+
+  if (arr[middleIndex] === sought) {
+    return middleIndex;
   }
 
-  return null;
+  if (arr[middleIndex] < sought) {
+    return binaryFinderRecursion(arr.slice(middleIndex), sought);
+  } else {
+    return binaryFinderRecursion(arr.slice(0, middleIndex), sought);
+  }
 }
 
-console.log('binarySearch result---> ', binarySearch(testArr, 100));
+
+function binaryFinder(arr, sought) {
+  let low = 0;
+  let high = arr.length - 1;
+  let mid;
+
+  while (low <= high) {
+    iterations2 += 1;
+
+    mid = Math.floor(low + high / 2);
+    if (arr[mid] === sought) {
+      return mid;
+    }
+
+    if (arr[mid] > mid) {
+      high = mid - 1;
+    } else {
+      low = mid + 1;
+    }
+  }
+}
+
+console.log('---> ', {
+  index: binaryFinderRecursion(arr, sought),
+  index: binaryFinder(arr, sought),
+  iterations1,
+  iterations2,
+});
