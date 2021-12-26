@@ -22,15 +22,15 @@ const graphModel = {
 function searchInWidth(graph, persons) {
   let queue = new Set(graph.me); // start point
 
-  while (queue.size) {
-    for (let person of queue) {
-      if (person.flag) {
-        return persons[person.name];
-      }
-
-      graph[person.name].forEach(queue.add, queue);
+  for (let person of queue) {
+    if (person.flag) {
+      return persons[person.name];
     }
+
+    graph[person.name].forEach(queue.add, queue);
   }
+
+  return null;
 }
 
 console.log(searchInWidth(graphModel, Persons));

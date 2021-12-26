@@ -65,7 +65,7 @@ function makeQueue(data) {
       }
     });
 
-    if (!!deepQueue.length) {
+    if (deepQueue.length) {
       result.push(deepQueue.flat(1));
     }
 
