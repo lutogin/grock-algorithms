@@ -20,7 +20,6 @@ function binaryFinderRecursion(arr, sought) {
   }
 }
 
-
 function binaryFinder(arr, sought) {
   let low = 0;
   let high = arr.length - 1;

@@ -17,7 +17,7 @@ const graphModel = {
   [Persons.Peggy.name]: [Persons.Jonny],
   [Persons.Thom.name]: [Persons.Alice],
   [Persons.Jonny.name]: [],
-}
+};
 
 function searchInWidth(graph, persons) {
   let queue = new Set(graph.me); // start point

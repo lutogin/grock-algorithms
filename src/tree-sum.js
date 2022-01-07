@@ -1,42 +1,42 @@
 const tree = {
-  name:"root",
+  name: 'root',
   value: 21,
   children: [
     {
-      name: "b1",
+      name: 'b1',
       value: 11,
       children: [
         {
-          name:"a",
+          name: 'a',
           value: 8,
           children: [
             {
-              name:"a2",
+              name: 'a2',
               value: 1,
-            }
+            },
           ],
         },
         {
-          name:"b",
+          name: 'b',
           value: 6,
-        }
+        },
       ],
     },
     {
-      name: "b2",
+      name: 'b2',
       value: 1,
       children: [
         {
-          name:"c",
+          name: 'c',
           value: 12,
         },
         {
-          name:"d",
+          name: 'd',
           value: 14,
-        }
+        },
       ],
     },
-  ]
+  ],
 };
 
 function countSumInTree(tree) {
@@ -58,19 +58,16 @@ function countSumInTree2(tree) {
   }
 
   return tree.children.reduce((acc, children) => {
-    return acc += countSumInTree2(children);
+    return (acc += countSumInTree2(children));
   }, tree.value);
 }
-
-
-
 
 function countSumInTree3(tree) {
   return tree.reduce((acc, item) => {
     if (!item.children) {
-      return acc
+      return acc;
     }
-    return acc + countSumInTree(item.children)
+    return acc + countSumInTree(item.children);
   }, 0);
 }
 

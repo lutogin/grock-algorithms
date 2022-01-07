@@ -2,7 +2,7 @@ function* fib() {
   let a = 1;
   let b = 1;
 
-  for(let i = 3; i <= 1000; i++) {
+  for (let i = 3; i <= 1000; i++) {
     let c = a + b;
     a = b;
     b = c;
@@ -12,12 +12,11 @@ function* fib() {
 
 const fibGen = fib();
 
-
 function fibOrigin(n) {
   let a = 1;
   let b = 1;
 
-  for(let i = 3; i <= n; i++) {
+  for (let i = 3; i <= n; i++) {
     let c = a + b;
     a = b;
     b = c;

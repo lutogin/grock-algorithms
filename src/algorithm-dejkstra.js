@@ -3,7 +3,7 @@ const Entity = {
   A: 'a',
   B: 'b',
   Finish: 'finish',
-}
+};
 
 // init graph
 const graph = {};
@@ -34,11 +34,8 @@ function findLowerCostNode(costs, processed = []) {
   let loverCostValue = Infinity;
 
   for (let node in costs) {
-    if (
-      costs[node] < loverCostValue
-      && !processed.includes(node)
-    ) {
-      loverCostValue = costs[node]
+    if (costs[node] < loverCostValue && !processed.includes(node)) {
+      loverCostValue = costs[node];
       lowerCostNode = node;
     }
   }
@@ -72,7 +69,7 @@ function dejkstra(graph, costs, parents) {
   return {
     costs: resultCosts,
     parents: resultParents,
-  }
+  };
 }
 
 console.log(dejkstra(graph, costs, parents));

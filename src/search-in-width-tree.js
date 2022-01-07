@@ -1,58 +1,60 @@
-const graph = [{
-  name: 'you',
-  flagged: false,
-  edge: [
-    {
-      name: 'alice',
-      flagged: false,
-      edge: [
-        {
-          name: 'peggy',
-          flagged: false,
-          edge: [],
-        },
-      ]
-    },
-    {
-      name: 'bob',
-      flagged: false,
-      edge: [
-        {
-          name: 'anuj',
-          flagged: false,
-          edge: [],
-        },
-        {
-          name: 'anu2',
-          flagged: true,
-          edge: [],
-        }
-      ]
-    },
-    {
-      name: 'claire',
-      flagged: false,
-      edge: [
-        {
-          name: 'jonny',
-          flagged: false,
-          edge: [
-            {
-              name: 'sally',
-              flagged: false,
-              edge: [],
-            },
-          ],
-        },
-        {
-          name: 'thom',
-          flagged: false,
-          edge: [],
-        }
-      ]
-    }
-  ],
-}];
+const graph = [
+  {
+    name: 'you',
+    flagged: false,
+    edge: [
+      {
+        name: 'alice',
+        flagged: false,
+        edge: [
+          {
+            name: 'peggy',
+            flagged: false,
+            edge: [],
+          },
+        ],
+      },
+      {
+        name: 'bob',
+        flagged: false,
+        edge: [
+          {
+            name: 'anuj',
+            flagged: false,
+            edge: [],
+          },
+          {
+            name: 'anu2',
+            flagged: true,
+            edge: [],
+          },
+        ],
+      },
+      {
+        name: 'claire',
+        flagged: false,
+        edge: [
+          {
+            name: 'jonny',
+            flagged: false,
+            edge: [
+              {
+                name: 'sally',
+                flagged: false,
+                edge: [],
+              },
+            ],
+          },
+          {
+            name: 'thom',
+            flagged: false,
+            edge: [],
+          },
+        ],
+      },
+    ],
+  },
+];
 
 function makeQueue(data) {
   if (data.edge.length) {
@@ -97,10 +99,9 @@ function makeQueue2(data, levelCounter = 0) {
     return mainQueue;
   }
 
-  return mainQueue.concat(makeQueue2(
-    dataToRecursionCall.flat(1),
-    levelCounter + 1,
-  ));
+  return mainQueue.concat(
+    makeQueue2(dataToRecursionCall.flat(1), levelCounter + 1)
+  );
 }
 
 const queue = makeQueue2(graph);
@@ -119,16 +120,17 @@ console.log('Flagged person on', foundFlaggedPerson.levelCounter, 'position');
  */
 function findFlaggedPerson(data, levelCounter = 0) {
   if (!data && !data.length) {
-    return ;
+    return;
   }
 
   const result = data.find((person) => person.flagged);
 
   return result
     ? { person: result, levelCounter }
-    : findFlaggedPerson(data.map((person) => person.edge).flat(1), levelCounter + 1);
-
+    : findFlaggedPerson(
+        data.map((person) => person.edge).flat(1),
+        levelCounter + 1
+      );
 }
-
 
 console.log(findFlaggedPerson(graph));
