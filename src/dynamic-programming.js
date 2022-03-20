@@ -23,7 +23,14 @@ const items = [
   }
 ];
 
+function countTotalSomething(el, property, matrix = []) {
+  return el.reduce((acc, item) => {
+    return acc += item?.[property] || 0;
+  }, 0);
+}
+
 function findOptimalLoad(items, size) {
+
   const itemsCopy = items.slice();
 
   // prepare matrix structure
@@ -45,9 +52,10 @@ function findOptimalLoad(items, size) {
       if (itemsCopy[elCord].size <= sizeCord) {
         if (
           elCord > 0
-          && matrix[elCord - 1][cSizeCord][0]?.size + itemsCopy[elCord].size <= sizeCord
+          && countTotalSomething(matrix[elCord - 1][cSizeCord], 'size') + itemsCopy[elCord].size <= sizeCord
+          && countTotalSomething(matrix[elCord - 1][cSizeCord], 'cost') + itemsCopy[elCord].cost > matrix[elCord][cSizeCord]
         ) {
-          matrix[elCord][cSizeCord].push(itemsCopy[elCord], ...matrix[elCord - 1][cSizeCord]);
+          matrix[elCord][cSizeCord] = [itemsCopy[elCord], ...matrix[elCord - 1][cSizeCord]];
         } else {
           matrix[elCord][cSizeCord] = [itemsCopy[elCord]];
         }
@@ -55,13 +63,13 @@ function findOptimalLoad(items, size) {
         if (
           elCord > 0
         ) {
-          if (matrix[elCord - 1][cSizeCord][0].cost > itemsCopy[elCord].cost) {
-            matrix[elCord][cSizeCord] = itemsCopy[elCord];
+          if (countTotalSomething(matrix[elCord - 1][cSizeCord], 'cost', matrix) > itemsCopy[elCord].cost) {
+            matrix[elCord][cSizeCord] = [itemsCopy[elCord]];
           } else {
             matrix[elCord][cSizeCord] = matrix[elCord - 1][cSizeCord];
           }
         } else {
-          matrix[elCord][cSizeCord] = 0;
+          matrix[elCord][cSizeCord] = [];
         }
       }
     }
