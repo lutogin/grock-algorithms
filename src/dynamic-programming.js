@@ -23,18 +23,18 @@ const items = [
   }
 ];
 
-function countTotalSomething(el, property, matrix = []) {
+function countTotalSomething(el, property) {
   return el.reduce((acc, item) => {
     return acc += item?.[property] || 0;
   }, 0);
 }
 
-function findOptimalLoad(items, size) {
-
-  const itemsCopy = items.slice();
+function findOptimalLoad(inputItems, size) {
+  // sort items by size
+  const items = inputItems.slice().sort((a, b) => a.size - b.size);
 
   // prepare matrix structure
-  const matrix = new Array(itemsCopy.length);
+  const matrix = new Array(items.length);
 
   for (let x = 0; x < matrix.length; x++) {
     matrix[x] = new Array(size);
@@ -43,34 +43,37 @@ function findOptimalLoad(items, size) {
     }
   }
 
-  // sort items by size
-  itemsCopy.sort((a, b) => a.size - b.size);
+  for (let elCord = 0; elCord < items.length; elCord++) {
+    for (let outsideSizeCord = 1; outsideSizeCord <= size; outsideSizeCord++) {
+      const sizeCord = outsideSizeCord - 1;
 
-  for (let elCord = 0; elCord < itemsCopy.length; elCord++) {
-    for (let sizeCord = 1; sizeCord <= size; sizeCord++) {
-      const cSizeCord = sizeCord - 1;
-      if (itemsCopy[elCord].size <= sizeCord) {
-        if (
-          elCord > 0
-          && countTotalSomething(matrix[elCord - 1][cSizeCord], 'size') + itemsCopy[elCord].size <= sizeCord
-          && countTotalSomething(matrix[elCord - 1][cSizeCord], 'cost') + itemsCopy[elCord].cost > matrix[elCord][cSizeCord]
-        ) {
-          matrix[elCord][cSizeCord] = [itemsCopy[elCord], ...matrix[elCord - 1][cSizeCord]];
+      if (elCord === 0) {
+        if (items[elCord].size <= outsideSizeCord) {
+          matrix[elCord][sizeCord] = [items[elCord]];
         } else {
-          matrix[elCord][cSizeCord] = [itemsCopy[elCord]];
+          matrix[elCord][sizeCord] = [];
+        }
+        continue;
+      }
+
+
+      if (items[elCord].size <= outsideSizeCord) {
+        console.log({
+          1: countTotalSomething(matrix[elCord - 1][sizeCord], 'size') + items[elCord].size <= outsideSizeCord,
+          2: countTotalSomething(matrix[elCord - 1][sizeCord], 'cost') > countTotalSomething(matrix[elCord][sizeCord], 'cost'),
+          cost: countTotalSomething(matrix[elCord - 1][sizeCord], 'cost'),
+          size: countTotalSomething(matrix[elCord - 1][sizeCord], 'size'),
+          cost2: countTotalSomething(matrix[elCord][sizeCord], 'cost')
+      });
+        if (
+          countTotalSomething(matrix[elCord - 1][sizeCord], 'cost') > items[elCord].cost
+        ) {
+          matrix[elCord][sizeCord].push(...matrix[elCord - 1][sizeCord]);
+        } else {
+          matrix[elCord][sizeCord].push(items[elCord]);
         }
       } else {
-        if (
-          elCord > 0
-        ) {
-          if (countTotalSomething(matrix[elCord - 1][cSizeCord], 'cost', matrix) > itemsCopy[elCord].cost) {
-            matrix[elCord][cSizeCord] = [itemsCopy[elCord]];
-          } else {
-            matrix[elCord][cSizeCord] = matrix[elCord - 1][cSizeCord];
-          }
-        } else {
-          matrix[elCord][cSizeCord] = [];
-        }
+        matrix[elCord][sizeCord] = matrix[elCord - 1][sizeCord]
       }
     }
   }
